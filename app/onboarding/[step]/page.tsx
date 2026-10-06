@@ -12,16 +12,16 @@ const STEPS: Record<string, {
 }> = {
   "12": {
     title: "Хаашаа илгээх вэ?",
-    subtitle: "Face Card, өнгөний палитр, Glow up playbook энэ хаягт ирнэ.",
+    subtitle: "Нүүрний шинжилгээ, Таны өнгө, Гоо сайхны хөтөч энэ хаягт ирнэ.",
     cta: "Үр дүнгээ авах",
     next: "/result",
   },
 };
 
 const DELIVERABLES = [
-  { id: "face", name: "Face Card", free: true, icon: "💎" },
-  { id: "palette", name: "Өнгөний палитр", free: false, icon: "🎨" },
-  { id: "playbook", name: "Glow up playbook", free: false, icon: "📘" },
+  { id: "face", name: "Нүүрний шинжилгээ", free: true, icon: "💎" },
+  { id: "palette", name: "Таны өнгө", free: false, icon: "🎨" },
+  { id: "playbook", name: "Гоо сайхны хөтөч", free: false, icon: "📘" },
 ];
 
 export default function OnboardingStep({ params }: { params: Promise<{ step: string }> }) {
