@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState, use, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Sparkles, Lock, Check } from "lucide-react";
 
@@ -30,14 +30,31 @@ export default function OnboardingStep({ params }: { params: Promise<{ step: str
   const step = STEPS[resolvedParams.step] ?? STEPS["12"];
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      return alert("Зургийн хэмжээ 5MB-аас бага байх ёстой");
+    }
+    setImageName(file.name);
+    const reader = new FileReader();
+    reader.onloadend = () => setImage(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.includes("@")) return alert("Зөв имэйл оруулна уу");
+    if (!image) return alert("Нүүрний зургаа оруулна уу");
     setLoading(true);
     await fetch("/api/lead", {
       method: "POST",
-      body: JSON.stringify({ email, step: resolvedparams.step }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, step: resolvedParams.step, image }),
     });
     router.push(step.next);
   };
@@ -89,6 +106,54 @@ export default function OnboardingStep({ params }: { params: Promise<{ step: str
           </ul>
 
           <form onSubmit={handleSubmit} className="space-y-3">
+            {/* Зураг оруулах */}
+            <div className="mb-3">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+              
+              {image ? (
+                <div className="relative rounded-2xl overflow-hidden border-2 border-rose-200">
+                  <img
+                    src={image}
+                    alt="Таны зураг"
+                    className="w-full aspect-[3/4] object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImage(null);
+                      setImageName("");
+                    }}
+                    className="absolute top-2 right-2 bg-white/90 backdrop-blur rounded-full w-8 h-8 flex items-center justify-center text-gray-700 hover:bg-white shadow"
+                  >
+                    ✕
+                  </button>
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3">
+                    <p className="text-xs text-white truncate">{imageName}</p>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full aspect-[3/4] rounded-2xl border-2 border-dashed border-rose-300 bg-rose-50/50 hover:bg-rose-50 flex flex-col items-center justify-center gap-2 transition"
+                >
+                  <span className="text-4xl">📷</span>
+                  <span className="text-sm font-semibold text-rose-600">
+                    Нүүрний зургаа оруулах
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    JPG, PNG (5MB хүртэл)
+                  </span>
+                </button>
+              )}
+            </div>
+
             <input
               type="email"
               required
