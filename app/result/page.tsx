@@ -10,24 +10,26 @@ export default function ResultPage() {
           Таны үр дүн бэлэн боллоо ✨
         </h1>
 
+        {/* ҮНЭГҮЙ - Нүүрний шинжилгээ */}
         <div className="bg-white rounded-3xl shadow-lg p-6 border-2 border-green-200">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-gray-900">💎 Face Card</h2>
+            <h2 className="font-bold text-gray-900">💎 Нүүрний шинжилгээ</h2>
             <span className="text-xs font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-full">
               ҮНЭГҮЙ
             </span>
           </div>
           <div className="aspect-[3/4] rounded-2xl bg-gradient-to-br from-rose-100 to-purple-100 flex items-center justify-center text-gray-500 text-sm">
-            [Таны Face Card энд харагдана]
+            [Таны нүүрний шинжилгээ энд харагдана]
           </div>
           <p className="text-xs text-gray-500 mt-3">
             Таны нүүрний онцлог, өнгө, стильд тохирсон зөвлөмж.
           </p>
         </div>
 
+        {/* ТҮГЖИГДСЭН 2 */}
         {[
-          { title: "🎨 Өнгөний палитр", desc: "Танд тохирох 12 өнгө" },
-          { title: "📘 Glow up playbook", desc: "30 хоногийн алхам алхмаар төлөвлөгөө" },
+          { title: "🎨 Таны өнгө", desc: "Танд тохирох 12 өнгө" },
+          { title: "📘 Гоо сайхны хөтөч", desc: "30 хоногийн алхам алхмаар төлөвлөгөө" },
         ].map((item) => (
           <div
             key={item.title}

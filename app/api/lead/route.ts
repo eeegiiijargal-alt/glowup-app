@@ -11,6 +11,5 @@ export async function POST(req: Request) {
     at: new Date(),
   });
 
-  // Дараа нь: AI-д илгээх, DB-д хадгалах
   return NextResponse.json({ ok: true });
 }
